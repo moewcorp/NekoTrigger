@@ -14,6 +14,8 @@ using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
 using ImGuiScene;
+using NekoTrigger.Helper;
+using Serilog;
 
 namespace NekoTrigger.Windows;
 
@@ -54,6 +56,12 @@ public class MainWindow : Window, IDisposable
             {
                 Plugin.Configuration.Tiggers = Plugin.triggers.ToArray();
                 Plugin.Configuration.Save();
+            }
+            ImGui.SameLine();
+            if (ImGui.Button("测试##neko"))
+            {
+                Log.Information("测试成功");
+                ChatHelper.SendMessage("/e 测试成功！");
             }
 
             if (ImGui.BeginTable("TriggersTable", 6, ImGuiTableFlags.ScrollY | ImGuiTableFlags.Resizable))
@@ -110,7 +118,12 @@ public class MainWindow : Window, IDisposable
             }
             ImGui.EndTabItem();
         }
-        
+
+        if (ImGui.BeginTabItem("Log"))
+        {
+            LogTab.Draw();
+            ImGui.EndTabItem();
+        }
 
 
         ImGui.EndTabBar();

@@ -18,7 +18,10 @@ using System.Linq;
 using Serilog.Events;
 using Serilog.Core;
 using System.Reflection;
+using ECommons;
 using Lumina.Excel.GeneratedSheets;
+using NekoTrigger.Helper;
+using Serilog;
 
 namespace NekoTrigger
 {
@@ -67,6 +70,7 @@ namespace NekoTrigger
             this.cmd.AddHandler("/trigger", new CommandInfo(OnCommand) { HelpMessage = "Neko Trigger Panel" });
             this.cmd.AddHandler("/ncmd", new CommandInfo(OnCommand) { HelpMessage = "Send command to in-game chatbox" });
 
+            ECommonsMain.Init(pluginInterface, this);
             DalamudApi.Framework.Update += ExecuteCommand;
             DalamudApi.ChatGui.ChatMessage += ChatLogDispatch;
             
@@ -88,7 +92,7 @@ namespace NekoTrigger
             if (!cmd.StartsWith('/')) return;
             try
             {
-                Chat.Instance.SendMessage(cmd);
+                ChatHelper.SendMessage(cmd);
             }catch (Exception ex)
             {
                 PluginLog.Error(ex.Message);
